@@ -1,0 +1,39 @@
+{
+  "name": "mcp-security-scanner",
+  "version": "1.0.0",
+  "description": "Scan MCP (Model Context Protocol) configs for hardcoded secrets, leaked API keys, and security misconfigurations",
+  "main": "scan.js",
+  "bin": {
+    "mcp-security-scanner": "./scan.js"
+  },
+  "scripts": {
+    "scan": "node scan.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "secrets",
+    "scanner",
+    "api-keys",
+    "credential-leak",
+    "ai-security",
+    "claude",
+    "cursor",
+    "mcp-server"
+  ],
+  "author": "Luca Moretti <lucamorettibuilds@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucamorettibuilds/mcp-security-scanner.git"
+  },
+  "homepage": "https://github.com/lucamorettibuilds/mcp-security-scanner#readme",
+  "bugs": {
+    "url": "https://github.com/lucamorettibuilds/mcp-security-scanner/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
