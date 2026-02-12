@@ -70,12 +70,13 @@ const CONFIG_PATHS = [
 // Secret detection patterns - comprehensive list
 const SECRET_PATTERNS = [
   { name: 'GitHub Token (classic)', pattern: /ghp_[a-zA-Z0-9]{36}/, severity: 'CRITICAL' },
-  { name: 'GitHub Token (fine-grained)', pattern: /github_pat_[a-zA-Z0-9_]{82}/, severity: 'CRITICAL' },
+  { name: 'GitHub Fine-grained PAT', pattern: /github_pat_[a-zA-Z0-9_]{36,}/, severity: 'CRITICAL' },
   { name: 'GitHub OAuth', pattern: /gho_[a-zA-Z0-9]{36}/, severity: 'CRITICAL' },
   { name: 'GitHub App Token', pattern: /ghu_[a-zA-Z0-9]{36}/, severity: 'CRITICAL' },
   { name: 'AWS Access Key', pattern: /AKIA[0-9A-Z]{16}/, severity: 'CRITICAL' },
   { name: 'OpenAI API Key', pattern: /sk-[a-zA-Z0-9]{20}T3BlbkFJ[a-zA-Z0-9]{20}/, severity: 'CRITICAL' },
   { name: 'OpenAI API Key (new)', pattern: /sk-proj-[a-zA-Z0-9_-]{40,}/, severity: 'CRITICAL' },
+    { name: 'Anthropic API Key', pattern: /sk-ant-api[a-zA-Z0-9-]{20,}/, severity: 'CRITICAL' },
   { name: 'Anthropic API Key', pattern: /sk-ant-[a-zA-Z0-9-]{90,}/, severity: 'CRITICAL' },
   { name: 'Stripe Secret Key', pattern: /sk_(live|test)_[a-zA-Z0-9]{24,}/, severity: 'CRITICAL' },
   { name: 'Stripe Publishable Key', pattern: /pk_(live|test)_[a-zA-Z0-9]{24,}/, severity: 'MEDIUM' },
@@ -86,7 +87,7 @@ const SECRET_PATTERNS = [
   { name: 'Google OAuth Client Secret', pattern: /GOCSPX-[a-zA-Z0-9_-]{28}/, severity: 'CRITICAL' },
   { name: 'Azure Subscription Key', pattern: /[a-f0-9]{32}(?=.*(?:azure|microsoft))/i, severity: 'HIGH' },
   { name: 'Twilio API Key', pattern: /SK[a-f0-9]{32}/, severity: 'CRITICAL' },
-  { name: 'SendGrid API Key', pattern: /SG\.[a-zA-Z0-9_-]{22}\.[a-zA-Z0-9_-]{43}/, severity: 'CRITICAL' },
+  { name: 'SendGrid API Key', pattern: /SG\.[a-zA-Z0-9_-]{16,}\.[a-zA-Z0-9_-]{16,}/, severity: 'CRITICAL' },
   { name: 'Mailgun API Key', pattern: /key-[a-zA-Z0-9]{32}/, severity: 'CRITICAL' },
   { name: 'Supabase Key', pattern: /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/, severity: 'HIGH' },
   { name: 'Postgres Connection String', pattern: /postgres(?:ql)?:\/\/[^:]+:[^@]+@/, severity: 'CRITICAL' },

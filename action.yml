@@ -1,0 +1,57 @@
+name: 'MCP Security Scanner'
+description: 'Scan MCP configuration files for hardcoded secrets and security misconfigurations'
+author: 'Luca Moretti'
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  path:
+    description: 'Path to scan (file or directory)'
+    required: false
+    default: '.'
+  recursive:
+    description: 'Scan directories recursively'
+    required: false
+    default: 'true'
+  fail-on-critical:
+    description: 'Fail the workflow if critical issues are found'
+    required: false
+    default: 'true'
+
+outputs:
+  findings:
+    description: 'JSON output of scan results'
+    value: ${{ steps.scan.outputs.findings }}
+  critical-count:
+    description: 'Number of critical findings'
+    value: ${{ steps.scan.outputs.critical }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run MCP Security Scanner
+      id: scan
+      shell: bash
+      run: |
+        FLAGS=""
+        if [ "${{ inputs.recursive }}" = "true" ]; then
+          FLAGS="--recursive"
+        fi
+        
+        # Run with JSON output for parsing
+        RESULT=$(node ${{ github.action_path }}/scan.js --json $FLAGS "${{ inputs.path }}" 2>/dev/null || true)
+        echo "findings<<SCANEOF" >> $GITHUB_OUTPUT
+        echo "$RESULT" >> $GITHUB_OUTPUT
+        echo "SCANEOF" >> $GITHUB_OUTPUT
+        
+        CRITICAL=$(echo "$RESULT" | jq -r '.summary.critical // 0')
+        echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+        
+        # Also run pretty output for the log
+        node ${{ github.action_path }}/scan.js $FLAGS "${{ inputs.path }}" || true
+        
+        if [ "${{ inputs.fail-on-critical }}" = "true" ] && [ "$CRITICAL" -gt 0 ]; then
+          echo "::error::Found $CRITICAL critical security issues in MCP configurations"
+          exit 1
+        fi
